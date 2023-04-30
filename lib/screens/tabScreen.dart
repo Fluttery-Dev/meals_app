@@ -5,7 +5,6 @@ import 'package:meals_app/screens/meals_screen.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/providers/favorites_provider.dart';
-import 'package:meals_app/providers/filters_provider.dart';
 
 class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({super.key});
@@ -35,7 +34,6 @@ class _TabScreenState extends ConsumerState<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<Filter, bool> _selectedFilters = ref.watch(filtersProvider);
     final favorites = ref.watch(favoriteMealProvider);
     final List<Widget> _tabScreens = [
       const CategoryScreen(),

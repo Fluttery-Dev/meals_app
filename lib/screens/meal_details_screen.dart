@@ -44,8 +44,18 @@ class _MealDetailsScreenState extends ConsumerState<MealDetailsScreen> {
                     : '${widget.meal.title} added to favorites');
               });
             },
-            icon: Icon(
-              isFavorite(widget.meal) ? Icons.favorite : Icons.favorite_outline,
+            icon: AnimatedSwitcher(
+              duration: Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) => RotationTransition(
+                turns: Tween<double>(begin: 0.9, end: 1).animate(animation),
+                child: child,
+              ),
+              child: Icon(
+                isFavorite(widget.meal)
+                    ? Icons.favorite
+                    : Icons.favorite_outline,
+                key: ValueKey(isFavorite),
+              ),
             ),
           )
         ],
@@ -53,12 +63,15 @@ class _MealDetailsScreenState extends ConsumerState<MealDetailsScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: widget.meal.imageUrl,
-              height: 300,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            Hero(
+              tag: widget.meal.id,
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: widget.meal.imageUrl,
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 10),
             Text(

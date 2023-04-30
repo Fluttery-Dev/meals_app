@@ -24,7 +24,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen>
       vsync: this,
       duration: const Duration(milliseconds: 300),
       lowerBound: 0,
-      upperBound: 100,
+      upperBound: 1,
     );
     _animationController.forward();
   }
@@ -67,8 +67,11 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen>
             )
             .toList(),
       ),
-      builder: (context, child) => Padding(
-        padding: EdgeInsets.only(top: 100 - _animationController.value),
+      builder: (context, child) => SlideTransition(
+        position: Tween(begin: Offset(0, 0.3), end: Offset(0, 0)).animate(
+          CurvedAnimation(
+              parent: _animationController, curve: Curves.decelerate),
+        ),
         child: child,
       ),
     );

@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/data/dummy_data.dart';
 import 'package:meals_app/models/category.dart';
-import 'package:meals_app/providers/meals_provider.dart';
 import 'package:meals_app/screens/meals_screen.dart';
 import 'package:meals_app/widgets/grid_category_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/providers/filters_provider.dart';
 
-class CategoryScreen extends ConsumerWidget {
-  const CategoryScreen({Key? key, required this.filters}) : super(key: key);
-  final Map<Filter, bool> filters;
+class CategoryScreen extends ConsumerStatefulWidget {
+  const CategoryScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final meals = ref.watch(filteredMealsProvider);
+  ConsumerState<CategoryScreen> createState() => _CategoryScreenState();
+}
 
+class _CategoryScreenState extends ConsumerState<CategoryScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      lowerBound: 0,
+      upperBound: 100,
+    );
+    _animationController.forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final meals = ref.watch(filteredMealsProvider);
     void onSelectCategory(BuildContext context, Category category) {
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -30,8 +47,9 @@ class CategoryScreen extends ConsumerWidget {
       );
     }
 
-    return Scaffold(
-      body: GridView(
+    return AnimatedBuilder(
+      animation: _animationController,
+      child: GridView(
         padding: const EdgeInsets.all(24),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -48,6 +66,10 @@ class CategoryScreen extends ConsumerWidget {
               ),
             )
             .toList(),
+      ),
+      builder: (context, child) => Padding(
+        padding: EdgeInsets.only(top: 100 - _animationController.value),
+        child: child,
       ),
     );
   }

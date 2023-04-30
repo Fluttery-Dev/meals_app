@@ -38,9 +38,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
     final Map<Filter, bool> _selectedFilters = ref.watch(filtersProvider);
     final favorites = ref.watch(favoriteMealProvider);
     final List<Widget> _tabScreens = [
-      CategoryScreen(
-        filters: _selectedFilters,
-      ),
+      const CategoryScreen(),
       MealsScreen(
         meals: favorites,
       )
